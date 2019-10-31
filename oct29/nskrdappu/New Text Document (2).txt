@@ -1,0 +1,55 @@
+<?php 
+	session_start();
+
+	// variable declaration
+ 	      $username = "";
+	      $aadharnumber    = "";
+              $city ="";
+              $village ="";
+              $vechile_number="";
+              $vechile_color ="";
+              $email ="";
+              $db="registration";
+	$errors = array(); 
+	$_SESSION['success'] = "";
+
+	// connect to database
+	$db = mysqli_connect('localhost', 'root', '', 'registration');
+
+	// REGISTER DONOR	
+	if (isset($_POST['reg_donation'])) {
+
+		// receive all input values from the form
+		$username = mysqli_real_escape_string($db, $_POST['username']);
+		$aadharnumber = mysqli_real_escape_string($db, $_POST['aadharnumber']);
+                            $city = mysqli_real_escape_string($db, $_POST['city']);
+                            $village = mysqli_real_escape_string($db, $_POST['village']);
+		$vechile_number=mysqli_real_escape_string($db, $_POST['vechile_number']);
+		$vechile_color=mysqli_real_escape_string($db,$_POST['vechile_color']);
+		$email=mysqli_real_escape_string($db, $_POST['email']);
+	
+		// form validation: ensure that the form is correctly filled
+		if (empty($username)) { array_push($errors, "Username is required"); }
+		if (empty($aadharnumber)) { array_push($errors, "aadharnumber is required"); }
+                if (empty($city)) { array_push($errors, "city is required"); }
+                if (empty($village))  { array_push($errors, "village is required"); }
+		if (empty($vechile_number)) { array_push($errors, "vechile number is required"); }
+                if (empty($vechile_color)) { array_push($errors, "vechile color is required"); }
+                if (empty($email)) { array_push($errors, "email is required"); }
+
+		
+
+		// register user if there are no errors in the form
+		if (count($errors) == 0) {
+			
+			$query = "INSERT INTO agent (username, aadharnumber, city, village, vechile_number,vechile_color, email) 
+					  VALUES('$username','$aadharnumber','$city','$village','$vechile_number','$vechile_color','$email')";
+			mysqli_query($db, $query);
+
+			$_SESSION['username'] = $username;
+			$_SESSION['success'] = "Thanks for Registration";
+			
+			header('location: success.php');
+		}
+
+	}

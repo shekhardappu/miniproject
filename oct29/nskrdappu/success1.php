@@ -1,0 +1,3 @@
+<? php
+echo "THANKS FOR REGISTRATION AS AGENT"
+?>
